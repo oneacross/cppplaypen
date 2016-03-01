@@ -28,7 +28,7 @@ using namespace std;
 // structure! Otherwise, the unique_ptr will destruct the node when the
 // function exits. Soooo precise!!!!
 
-// The linked list.
+// The linked list node.
 class Node {
     public:
     int value;
@@ -92,10 +92,8 @@ unique_ptr<Node> int_to_list(int n) {
     return retptr;
 }
 
-// A function that prints out the list in a nice format.
+// Print an intlist in a nice format.
 void print_list(Node* list) {
-
-    auto count = 0;
 
     while (list != nullptr) {
         cout << list->value;
@@ -105,26 +103,8 @@ void print_list(Node* list) {
         }
 
         list = list->next;
-
-        count += 1;
-//        cout << count << " iterations through loop" << endl;
     }
     cout << endl;
-}
-
-auto create_list() {
-    // Create and return a 2 node linked list.
-    // This means the list must exist on the heap.
-    unique_ptr<Node> node1 = make_unique<Node>(3);
-    unique_ptr<Node> node2 = make_unique<Node>(17);
-
-    // Add the new node to the list.
-    node1->next = node2.get();
-    // Release the new node's ownership.
-    node2.release();
-
-    // Transfer ownership of the linked list.
-    return node1;
 }
 
 // Sum two intlists and return as another intlist.
@@ -209,7 +189,7 @@ auto add_intlists(Node* intlist1, Node* intlist2) {
 }
 
 int main() {
-    auto num1 = 1729, num2 = 12;
+    auto num1 = 1, num2 = 9999;
     cout << "Adding " << num1 << " and " << num2 << endl;
     auto intlist1 = int_to_list(num1);
     auto intlist2 = int_to_list(num2);
