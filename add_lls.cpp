@@ -97,7 +97,7 @@ void print_list(Node* list) {
 
     auto count = 0;
 
-    while (list) {
+    while (list != nullptr) {
         cout << list->value;
 
         if (list->next) {
