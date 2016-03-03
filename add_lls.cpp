@@ -27,6 +27,12 @@ using namespace std;
 // * ALSO need to release ownership after attaching the node to the data
 // structure! Otherwise, the unique_ptr will destruct the node when the
 // function exits. Soooo precise!!!!
+//
+// When passing a pointer to a function, you cannot modify the pointer itself!
+// This is because the pointer is copied into the stack. If you wanted to
+// modify the pointer, then you would need to pass in a pointer to a pointer.
+// What you can do is modify the structure that the pointer is pointing to.
+// If you only want a read-only copy, than declare the pointer as const.
 
 // The linked list node.
 class Node {
@@ -93,7 +99,7 @@ unique_ptr<Node> int_to_list(int n) {
 }
 
 // Print an intlist in a nice format.
-void print_list(Node* list) {
+void print_list(const Node* list) {
 
     while (list != nullptr) {
         cout << list->value;
