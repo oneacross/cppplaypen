@@ -70,7 +70,7 @@ unique_ptr<Node> int_to_list(int n) {
     while (n > 0) {
         // Create a new node on the heap with the next least significant digit.
         auto least_sig_digit = n % 10;
-        unique_ptr<Node> new_node = make_unique<Node>(least_sig_digit);
+        auto new_node = make_unique<Node>(least_sig_digit);
         //cout << "Adding node for " << least_sig_digit << endl;
 
         // Append the new node to the list.
@@ -107,12 +107,22 @@ void print_list(Node* list) {
     cout << endl;
 }
 
+// Create a new node and append.
+void append_node(Node* tail, int digit) {
+
+    auto new_node = make_unique<Node>(digit);
+    tail->next = new_node.get();
+
+    // Release the ownership.
+    new_node.release();
+}
+
 // Sum two intlists and return as another intlist.
 auto add_intlists(Node* intlist1, Node* intlist2) {
 
-    unique_ptr<Node> ptr_to_sumlist = make_unique<Node>();
-    Node* sumlist_tail = ptr_to_sumlist.get();
-    bool carry = false;
+    auto ptr_to_sumlist = make_unique<Node>();
+    auto sumlist_tail = ptr_to_sumlist.get();
+    auto carry = false;
 
     while (intlist1 && intlist2) {
 
@@ -120,11 +130,7 @@ auto add_intlists(Node* intlist1, Node* intlist2) {
         carry = sum > 9;
         int digit = sum % 10;
 
-        // Create a new node and append.
-        unique_ptr<Node> new_node = make_unique<Node>(digit);
-        sumlist_tail->next = new_node.get();
-        // Release the ownership.
-        new_node.release();
+        append_node(sumlist_tail, digit);
 
         // Forward the tail.
         sumlist_tail = sumlist_tail->next;
@@ -139,11 +145,7 @@ auto add_intlists(Node* intlist1, Node* intlist2) {
         carry = sum > 9;
         int digit = sum % 10;
 
-        // Create a new node and append.
-        unique_ptr<Node> new_node = make_unique<Node>(digit);
-        sumlist_tail->next = new_node.get();
-        // Release the ownership.
-        new_node.release();
+        append_node(sumlist_tail, digit);
 
         // Forward the tail.
         sumlist_tail = sumlist_tail->next;
@@ -157,11 +159,7 @@ auto add_intlists(Node* intlist1, Node* intlist2) {
         carry = sum > 9;
         int digit = sum % 10;
 
-        // Create a new node and append.
-        unique_ptr<Node> new_node = make_unique<Node>(digit);
-        sumlist_tail->next = new_node.get();
-        // Release the ownership.
-        new_node.release();
+        append_node(sumlist_tail, digit);
 
         // Forward the tail.
         sumlist_tail = sumlist_tail->next;
@@ -171,11 +169,7 @@ auto add_intlists(Node* intlist1, Node* intlist2) {
 
     // Check for a final carry.
     if (carry) {
-        // Create a new node for the final carry.
-        unique_ptr<Node> new_node = make_unique<Node>(1);
-        sumlist_tail->next = new_node.get();
-        // Release the ownership.
-        new_node.release();
+        append_node(sumlist_tail, 1);
 
         // Forward the tail.
         sumlist_tail = sumlist_tail->next;
