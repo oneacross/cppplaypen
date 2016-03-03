@@ -107,14 +107,22 @@ void print_list(Node* list) {
     cout << endl;
 }
 
-// Create a new node and append.
-void append_node(Node* tail, int digit) {
+// Create a new node, append, forward, and return it.
+auto append_node(Node* tail, int digit) {
 
+    // Create the node.
     auto new_node = make_unique<Node>(digit);
+
+    // Append the node.
     tail->next = new_node.get();
 
     // Release the ownership.
     new_node.release();
+
+    // Forward the tail.
+    tail = tail->next;
+
+    return tail;
 }
 
 // Sum two intlists and return as another intlist.
@@ -130,10 +138,7 @@ auto add_intlists(Node* intlist1, Node* intlist2) {
         carry = sum > 9;
         int digit = sum % 10;
 
-        append_node(sumlist_tail, digit);
-
-        // Forward the tail.
-        sumlist_tail = sumlist_tail->next;
+        sumlist_tail = append_node(sumlist_tail, digit);
 
         intlist1 = intlist1->next;
         intlist2 = intlist2->next;
@@ -145,10 +150,7 @@ auto add_intlists(Node* intlist1, Node* intlist2) {
         carry = sum > 9;
         int digit = sum % 10;
 
-        append_node(sumlist_tail, digit);
-
-        // Forward the tail.
-        sumlist_tail = sumlist_tail->next;
+        sumlist_tail = append_node(sumlist_tail, digit);
 
         intlist1 = intlist1->next;
     }
@@ -159,20 +161,14 @@ auto add_intlists(Node* intlist1, Node* intlist2) {
         carry = sum > 9;
         int digit = sum % 10;
 
-        append_node(sumlist_tail, digit);
-
-        // Forward the tail.
-        sumlist_tail = sumlist_tail->next;
+        sumlist_tail = append_node(sumlist_tail, digit);
 
         intlist2 = intlist2->next;
     }
 
     // Check for a final carry.
     if (carry) {
-        append_node(sumlist_tail, 1);
-
-        // Forward the tail.
-        sumlist_tail = sumlist_tail->next;
+        sumlist_tail = append_node(sumlist_tail, 1);
     }
 
     // Convert the head of the list to a unique_ptr
